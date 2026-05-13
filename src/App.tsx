@@ -43,6 +43,57 @@ const staggerContainer = {
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitStatus, setSubmitStatus] = React.useState<{
+    type: 'success' | 'error' | null;
+    message: string | null;
+  }>({ type: null, message: null });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: null });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus({ 
+          type: 'success', 
+          message: data.message || 'Thank you! Your message has been sent.' 
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        throw new Error(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      setSubmitStatus({ 
+        type: 'error', 
+        message: error instanceof Error ? error.message : 'Failed to send message.' 
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen selection:bg-gold selection:text-navy">
@@ -63,7 +114,7 @@ export default function App() {
       <nav className="fixed w-full z-50 bg-navy/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <span className="text-gold font-heading font-bold text-xl tracking-wider uppercase">
-            MASC.PORTFOLIO
+            A. S. CHOWDHURY
           </span>
           
           <div className="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest text-slate-300">
@@ -474,28 +525,74 @@ export default function App() {
             viewport={{ once: true }}
             variants={fadeIn}
             className="bg-navy p-10 border border-white/5 space-y-6"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
           >
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-slate-500">Full Name</label>
-                <input type="text" className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors" />
+                <input 
+                  type="text" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors disabled:opacity-50" 
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-slate-500">Email Address</label>
-                <input type="email" className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors" />
+                <input 
+                  type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors disabled:opacity-50" 
+                />
               </div>
             </div>
             <div className="space-y-2">
               <label className="text-xs uppercase tracking-widest text-slate-500">Subject</label>
-              <input type="text" className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors" />
+              <input 
+                type="text" 
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                disabled={isSubmitting}
+                className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors disabled:opacity-50" 
+              />
             </div>
             <div className="space-y-2">
               <label className="text-xs uppercase tracking-widest text-slate-500">Message</label>
-              <textarea rows={4} className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors resize-none"></textarea>
+              <textarea 
+                rows={4} 
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+                disabled={isSubmitting}
+                className="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-gold outline-none transition-colors resize-none disabled:opacity-50"
+              ></textarea>
             </div>
-            <button className="w-full bg-gold text-navy font-bold py-5 uppercase tracking-[0.2em] hover:bg-white transition-all">
-              Send Message
+            
+            {submitStatus.message && (
+              <div className={`p-4 text-sm ${submitStatus.type === 'success' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
+                {submitStatus.message}
+              </div>
+            )}
+
+            <button 
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-gold text-navy font-bold py-5 uppercase tracking-[0.2em] hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+            >
+              {isSubmitting ? (
+                <div className="w-6 h-6 border-2 border-navy border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                'Send Message'
+              )}
             </button>
           </motion.form>
         </div>

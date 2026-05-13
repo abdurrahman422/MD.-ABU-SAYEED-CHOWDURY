@@ -1,10 +1,10 @@
-# MASC Portfolio: Md. Abu Sayeed Chowdhury
+# Professional Executive Showcase: Md. Abu Sayeed Chowdhury
 
-A high-end, corporate one-page professional portfolio for **Md. Abu Sayeed Chowdhury**, a Senior Operations Leader and Feed Mill Specialist with over 23 years of global excellence.
+A high-end, corporate one-page professional showcase for **Md. Abu Sayeed Chowdhury**, a Senior Operations Leader and Feed Mill Specialist with over 23 years of global excellence.
 
 ## 🌟 Overview
 
-This portfolio is designed with a **"Dark Executive"** aesthetic, reflecting the authority, sophistication, and result-oriented nature of a senior operations leader. It showcases a career spanning from the marine engineering shipyards of Singapore to the leading agro-industries of Bangladesh.
+This executive showcase is designed with a **"Dark Executive"** aesthetic, reflecting the authority, sophistication, and result-oriented nature of a senior operations leader. It showcases a career spanning from the marine engineering shipyards of Singapore to the leading agro-industries of Bangladesh.
 
 ## 🛠️ Tech Stack
 
@@ -62,10 +62,10 @@ This portfolio is designed with a **"Dark Executive"** aesthetic, reflecting the
 
 ## 📁 Project Structure
 
-- `src/App.tsx`: Main application component containing all portfolio sections.
+- `src/App.tsx`: Main application component containing all executive sections.
 - `src/index.css`: Tailwind configuration and global styles with standard CSS variables.
 - `public/`: Static assets including the professional portrait.
 
 ---
 
-*Prepared by MD. Abu Sayeed Chowdhury Portfolio Development Team.*
+*Prepared for Md. Abu Sayeed Chowdhury.*
