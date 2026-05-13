@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Roboto", sans-serif;
+  --color-navy: #001f3f;
+  --color-gold: #D4AF37;
+  --color-slate-custom: #708090;
+}
+
+@layer base {
+  body {
+    @apply bg-[#001226] text-slate-200 antialiased font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    transition: color 0.3s ease;
+  }
+}
